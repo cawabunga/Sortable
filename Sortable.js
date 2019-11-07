@@ -266,7 +266,7 @@
       } while (!selfOnly && (el = el.parentNode));
     }
 
-    var matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix;
+    var matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix || window.MSCSSMatrix;
     /*jshint -W056 */
 
     return matrixFn && new matrixFn(appliedTransforms);
@@ -1320,6 +1320,11 @@
 
       if (originalTarget.isContentEditable) {
         return;
+      } // Safari ignores further event handling after mousedown
+
+
+      if (!this.nativeDraggable && Safari && target && target.tagName.toUpperCase() === 'SELECT') {
+        return;
       }
 
       target = closest(target, options.draggable, el, false);
@@ -2136,6 +2141,8 @@
         css(document.body, 'user-select', '');
       }
 
+      css(dragEl, 'transform', '');
+
       if (evt) {
         if (moved) {
           evt.cancelable && evt.preventDefault();
@@ -2399,6 +2406,8 @@
       });
 
       this._onDrop();
+
+      this._disableDelayedDragEvents();
 
       sortables.splice(sortables.indexOf(this.el), 1);
       this.el = el = null;
