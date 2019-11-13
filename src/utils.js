@@ -122,7 +122,7 @@ function matrix(el, selfOnly) {
 		} while (!selfOnly && (el = el.parentNode));
 	}
 
-	const matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix || window.MSCSSMatrix;
+	const matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix;
 	/*jshint -W056 */
 	return matrixFn && (new matrixFn(appliedTransforms));
 }
